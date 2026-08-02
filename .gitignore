@@ -1,0 +1,9 @@
+﻿node_modules/
+__pycache__/
+.env
+.env.*
+debug.log
+server.out.log
+server.err.log
+test-results/
+*.pyc

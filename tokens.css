@@ -1,0 +1,50 @@
+/* Hallmark · pre-emit critique: P4 H4 E4 S4 R4 V4 */
+:root {
+	--color-paper: oklch(96.8% 0.008 84);
+	--color-paper-2: oklch(93.8% 0.011 84);
+	--color-panel: oklch(99.2% 0.004 84 / 0.86);
+	--color-panel-solid: oklch(99.2% 0.004 84);
+	--color-ink: oklch(19% 0.018 250);
+	--color-ink-2: oklch(39% 0.018 250);
+	--color-muted: oklch(55% 0.014 250);
+	--color-rule: oklch(83% 0.012 84);
+	--color-rule-strong: oklch(72% 0.018 84);
+	--color-accent: oklch(48% 0.105 230);
+	--color-accent-2: oklch(53% 0.095 172);
+	--color-accent-ink: oklch(98% 0.004 84);
+	--color-accent-soft: oklch(91% 0.035 230);
+	--color-warm: oklch(58% 0.09 62);
+	--color-warm-soft: oklch(91% 0.05 72);
+	--color-danger: oklch(54% 0.15 28);
+	--color-danger-soft: oklch(94% 0.035 28);
+	--color-focus: oklch(62% 0.14 230);
+
+	--font-display: ui-serif, "Iowan Old Style", "Songti SC", "Noto Serif CJK SC", Georgia, serif;
+	--font-body: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+	--font-outlier: "SF Mono", "Cascadia Code", Consolas, monospace;
+
+	--space-2xs: 0.5rem;
+	--space-xs: 0.75rem;
+	--space-sm: 1rem;
+	--space-md: 1.5rem;
+	--space-lg: 2rem;
+	--space-xl: 3rem;
+	--space-2xl: 4.5rem;
+
+	--text-xs: 0.75rem;
+	--text-sm: 0.875rem;
+	--text-md: 1rem;
+	--text-lg: 1.25rem;
+	--text-xl: 1.65rem;
+	--text-2xl: clamp(2.2rem, 4.8vw, 4.9rem);
+
+	--radius-sm: 0.625rem;
+	--radius-card: 1.375rem;
+	--radius-pill: 999px;
+	--rule-thin: 1px;
+	--shadow-panel: 0 18px 60px oklch(19% 0.018 250 / 0.09);
+	--shadow-control: 0 10px 28px oklch(48% 0.105 230 / 0.18);
+	--ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+	--ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+	--dur-short: 180ms;
+}

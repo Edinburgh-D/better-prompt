@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Better Prompt｜图片提示词优化</title>
+		<link rel="stylesheet" href="tokens.css" />
+		<link rel="stylesheet" href="styles.css" />
+	</head>
+	<body>
+		<div class="app-shell">
+			<header class="workspace-header">
+				<div class="brand-block">
+					<a class="brand-mark" href="index.html" aria-label="Better Prompt 首页">BP</a>
+					<div>
+						<p class="eyebrow">Image Prompt Bench</p>
+						<h1>把画面想法拆成可控镜头</h1>
+					</div>
+				</div>
+				<nav class="top-nav" aria-label="页面导航">
+					<a class="nav-link" href="index.html">文本</a>
+					<a class="nav-link active" href="image-prompt.html">图片</a>
+				</nav>
+			</header>
+
+			<main class="image-workbench">
+				<section class="panel image-tag-panel" aria-labelledby="tag-title">
+					<div class="panel-header">
+						<div>
+							<p class="panel-kicker">Tags</p>
+							<h2 id="tag-title">标签选择</h2>
+						</div>
+						<span class="panel-meta">主体 · 光影 · 环境</span>
+					</div>
+					<label class="field-block" for="imageType">
+						<span class="field-label">图片类型</span>
+						<select id="imageType" onchange="refreshImageSummaryPrompt()">
+							<option value="general">通用</option>
+							<option value="portrait">人物 / 头像</option>
+							<option value="product">商品图</option>
+							<option value="poster">海报 / 封面</option>
+							<option value="illustration">插画</option>
+							<option value="scene">场景图</option>
+							<option value="character">角色设定</option>
+						</select>
+					</label>
+					<div id="imageTagGroups" class="tag-groups" aria-label="图片标签选择"></div>
+				</section>
+
+				<section class="panel image-summary-panel" aria-labelledby="summary-title">
+					<div class="panel-header">
+						<div>
+							<p class="panel-kicker">Prompt</p>
+							<h2 id="summary-title">已选标签与汇总提示词</h2>
+						</div>
+						<span class="panel-meta">可手动改写</span>
+					</div>
+					<div class="selected-tags" id="selectedImageTags">
+						<span class="muted-text">暂未选择标签</span>
+					</div>
+					<textarea
+						id="imageInputPrompt"
+						placeholder="从左侧选择标签，或直接输入原始图片提示词。例如：雨后的城市街头，一个穿银色外套的年轻女性，写实摄影。"
+						oninput="syncImagePromptFromManualInput()"
+					></textarea>
+					<div class="btn-group">
+						<button class="btn-secondary" onclick="refreshImageSummaryPrompt()">生成汇总</button>
+						<button class="btn-secondary" onclick="clearImageInput()">清空</button>
+					</div>
+				</section>
+
+				<section class="panel image-action-panel" aria-labelledby="action-title">
+					<div class="panel-header">
+						<div>
+							<p class="panel-kicker">Controls</p>
+							<h2 id="action-title">补充信息与测试</h2>
+						</div>
+						<span class="panel-meta">运行前检查</span>
+					</div>
+					<div class="control-stack">
+						<label class="field-block" for="targetModel">
+							<span class="field-label">目标模型</span>
+							<select id="targetModel">
+								<option value="general" selected>通用</option>
+							</select>
+						</label>
+
+						<label class="field-block" for="imageStylePreset">
+							<span class="field-label">风格预设</span>
+							<select id="imageStylePreset" onchange="refreshImageSummaryPrompt()">
+								<option value="">自动判断</option>
+								<option value="真实摄影，干净自然，适合普通用户直接出图">真实摄影</option>
+								<option value="电影感画面，层次光影，情绪明确">电影感</option>
+								<option value="商业产品图，干净背景，高级质感">商业产品图</option>
+								<option value="轻柔插画，色彩舒适，细节适中">轻柔插画</option>
+								<option value="动漫风格，角色特征清晰，画面干净">动漫风</option>
+								<option value="极简海报，留白明确，主体突出">极简海报</option>
+							</select>
+						</label>
+
+						<div class="workflow-grid image-param-grid">
+							<label class="field-block" for="imageAspectRatio">
+								<span class="field-label">画幅</span>
+								<select id="imageAspectRatio" onchange="refreshImageSummaryPrompt()">
+									<option value="">自动</option>
+									<option value="1:1">1:1</option>
+									<option value="3:4">3:4</option>
+									<option value="4:5">4:5</option>
+									<option value="9:16">9:16</option>
+									<option value="16:9">16:9</option>
+								</select>
+							</label>
+							<label class="field-block" for="imageDetailLevel">
+								<span class="field-label">细节</span>
+								<select id="imageDetailLevel" onchange="refreshImageSummaryPrompt()">
+									<option value="标准">标准</option>
+									<option value="简洁">简洁</option>
+									<option value="丰富">丰富</option>
+								</select>
+							</label>
+						</div>
+
+						<label class="field-block" for="imageSubjectDetail">
+							<span class="field-label">主体补充</span>
+							<input id="imageSubjectDetail" type="text" placeholder="例如：年轻女性、白色保温杯、唐代街市" oninput="refreshImageSummaryPrompt()" />
+						</label>
+
+						<label class="field-block" for="imageSceneDetail">
+							<span class="field-label">场景 / 用途</span>
+							<input id="imageSceneDetail" type="text" placeholder="例如：电商主图、封面海报、雨夜街道" oninput="refreshImageSummaryPrompt()" />
+						</label>
+
+						<label class="field-block" for="imageAvoidDetail">
+							<span class="field-label">避免出现</span>
+							<input id="imageAvoidDetail" type="text" placeholder="例如：文字乱码、现代建筑、过度磨皮" oninput="refreshImageSummaryPrompt()" />
+						</label>
+					</div>
+					<div class="btn-group vertical-actions">
+						<button class="btn-primary" id="imageOptimizeBtn" onclick="optimizeImagePrompt()">开始优化</button>
+						<button class="btn-secondary" id="imageTestBtn" onclick="runImagePromptTest()">运行测试</button>
+					</div>
+				</section>
+			</main>
+
+			<section class="image-result-grid">
+				<div class="panel">
+					<div class="panel-header">
+						<div>
+							<p class="panel-kicker">Result</p>
+							<h2>图片优化结果</h2>
+						</div>
+						<span class="panel-meta">中英提示词 · 负面提示词</span>
+					</div>
+					<div class="output-content" id="imageOutputContent">
+						<div class="empty-state">
+							<p>选择标签或输入图片提示词后开始优化。</p>
+						</div>
+					</div>
+				</div>
+
+				<div class="panel">
+					<div class="panel-header">
+						<div>
+							<p class="panel-kicker">Snapshot</p>
+							<h2>当前配置</h2>
+						</div>
+					</div>
+					<div class="output-content compact-output" id="imageConfigPreview">
+						<div class="empty-state">
+							<p>标签和补充信息会汇总在这里。</p>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="history-panel" aria-labelledby="image-history-title">
+				<div class="panel-header">
+					<div>
+						<p class="panel-kicker">Archive</p>
+						<h2 id="image-history-title">图片历史记录</h2>
+					</div>
+					<button class="btn-secondary compact-btn" onclick="clearImageHistory()">清空历史</button>
+				</div>
+				<div class="history-toolbar">
+					<input id="imageHistorySearch" type="search" placeholder="搜索图片历史记录..." oninput="updateImageHistoryDisplay()" />
+				</div>
+				<div class="history-list" id="imageHistoryList">
+					<div class="empty-state">
+						<p>暂无图片历史记录</p>
+					</div>
+				</div>
+			</section>
+		</div>
+		<script src="image-prompt.js"></script>
+	</body>
+</html>

@@ -1,0 +1,10 @@
+[
+	{
+		"date": "2026-08-02",
+		"scope": "app",
+		"macrostructure": "Split Workbench",
+		"theme": "warm-paper-blue",
+		"enrichment": "none",
+		"brief": "去掉 better-prompt 页面 AI 味，统一文本和图片提示词优化工作台"
+	}
+]

@@ -1,0 +1,12 @@
+{
+  "scripts": {
+    "build:css": "tailwindcss -i ./src/tailwind.css -o ./styles.css",
+    "watch:css": "tailwindcss -i ./src/tailwind.css -o ./styles.css --watch"
+  },
+  "dependencies": {
+    "playwright": "^1.62.0"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.17"
+  }
+}
