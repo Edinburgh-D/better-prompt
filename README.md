@@ -1,134 +1,254 @@
-# 提示词优化助手
+# Better Prompt
 
-基于 AI 的智能提示词评估与优化工具
+一个本地优先、轻量可维护的提示词优化工具。当前包含两个页面：
 
-## 功能特性
+- 文本提示词优化：把日常需求整理成更清晰、可执行、可复用的 AI 提问。
+- 图片提示词优化：通过标签、补充信息和模型诊断，生成中文提示词、英文提示词、负面提示词和参数建议。
 
-- ✅ **四维度评估**：清晰度、准确度、深度、相关性
-- ✅ **智能优化**：提供具体的改进建议和优化后的提示词
-- ✅ **图片提示词优化**：独立页面输出中文提示词、英文提示词、负面提示词和参数建议
-- ✅ **一键复制**：快速复制优化后的提示词
-- ✅ **历史记录**：自动保存最近 20 条记录
-- ✅ **响应式设计**：支持桌面和移动设备
+项目支持两种使用方式：
 
-## 快速开始
+- 本地运行：使用 Flask 代理 DeepSeek API。
+- 在线部署：使用 Cloudflare Pages 托管静态页面，使用 Pages Functions 提供 `/api/optimize` 接口。
 
-### 前提：
+## 功能
 
-1. 准备 DeepSeek API Key。
-2. 推荐通过环境变量 `DEEPSEEK_API_KEY` 配置密钥；也可以直接使用 `start.bat` 启动，脚本会为当前启动会话设置该变量。
+- 多场景文本优化：通用、小红书笔记、公众号文章、朋友圈文案、产品介绍、工作邮件、学习提问。
+- 图片提示词三栏工作台：标签选择、汇总提示词、补充信息与测试。
+- 结构化优化结果：评分、优点、缺点、建议、优化后的完整提示词。
+- 一键复制：文本页和图片页均支持复制关键结果。
+- 本地历史记录：文本历史和图片历史分开保存在浏览器 localStorage，最多 20 条。
+- 本地和线上兼容：本地可用 Flask，线上可用 Cloudflare Pages Functions。
 
-### 方法一：使用启动脚本（推荐）
+## 本地运行
 
-1. 双击 `start.bat` 文件
-2. 等待依赖安装完成
-3. 服务器启动后，浏览器访问 `http://localhost:5000`
+### 1. 配置 DeepSeek API Key
 
-### 方法二：手动启动
+不要把 API Key 写进代码或提交到 GitHub。建议在当前命令行设置环境变量：
 
-1. 安装 Python 依赖：
+```powershell
+set DEEPSEEK_API_KEY=你的 DeepSeek API Key
+```
 
-```bash
+如果使用 PowerShell，也可以用：
+
+```powershell
+$env:DEEPSEEK_API_KEY="你的 DeepSeek API Key"
+```
+
+### 2. 安装依赖
+
+```powershell
 pip install -r requirements.txt
 ```
 
-2. 启动代理服务器：
+### 3. 启动服务
 
-```bash
+```powershell
 python server.py
 ```
 
-3. 在浏览器中访问 `http://localhost:5000`
+然后访问：
 
-如果你直接打开 `index.html` 文件，页面会自动请求 `http://localhost:5000/api/optimize`，因此仍需先启动后端服务。
+```text
+http://localhost:5000
+```
 
-## 使用说明
-
-1. 在左侧输入框中输入你的原始提示词
-2. 点击"开始优化"按钮
-3. 等待 AI 分析和优化（通常需要 10-30 秒）
-4. 查看右侧的评估结果和优化建议
-5. 点击"复制优化后的提示词"按钮快速复制
-
-图片提示词优化页面访问地址：
+图片提示词页面：
 
 ```text
 http://localhost:5000/image-prompt.html
 ```
 
-图片页历史记录与文本页历史记录分开保存。
+也可以运行：
 
-## 优化标准
-
-### 目标明确性（1-5 分）
-
-提示是否清楚说明要完成什么任务、解决什么问题、面向什么结果？
-
-### 背景完整性（1-5 分）
-
-提示是否提供必要上下文、使用场景、对象、约束和前提条件？
-
-### 输出可控性（1-5 分）
-
-提示是否规定输出结构、格式、粒度、长度、语言风格和验收标准？
-
-### 执行路径（1-5 分）
-
-提示是否说明分析步骤、优先级、判断标准、推理方式或工作流程？
-
-### 边界约束（1-5 分）
-
-提示是否明确不要做什么、需要避免什么、有哪些限制和风险？
-
-### 可复用性（1-5 分）
-
-提示是否便于后续修改变量、迁移到相似任务或形成模板？
-
-## 技术架构
-
-- **前端**：HTML + CSS + JavaScript（原生）
-- **后端代理**：Flask + Flask-CORS
-- **AI 模型**：通过 OpenAI SDK 调用 DeepSeek `deepseek-v4-pro`
-
-## 文件说明
-
+```powershell
+start.bat
 ```
+
+`start.bat` 会检查 `DEEPSEEK_API_KEY` 是否存在，但不会内置任何密钥。
+
+## Cloudflare Pages 部署
+
+推荐部署方式：
+
+```text
+Cloudflare Pages + Pages Functions
+```
+
+原因：
+
+- 静态页面由 Cloudflare Pages 托管。
+- `/api/optimize` 由 `functions/api/optimize.js` 自动提供。
+- DeepSeek API Key 存在 Cloudflare 环境变量中，不暴露给前端。
+
+### 1. 创建 Pages 项目
+
+在 Cloudflare Dashboard 中：
+
+```text
+Workers & Pages
+→ Create
+→ Pages
+→ Connect to Git
+→ 选择 GitHub 仓库 Edinburgh-D/better-prompt
+```
+
+### 2. 构建配置
+
+如果 Cloudflare 要求填写构建配置，使用：
+
+```text
+Build command: npm run build:css
+Build output directory: /
+Root directory: /
+```
+
+如果界面里有部署命令或非生产分支部署命令，通常不需要额外命令；如果表单强制必填，可以填：
+
+```text
+exit 0
+```
+
+### 3. 配置环境变量
+
+进入 Pages 项目：
+
+```text
+Settings
+→ Environment variables
+→ Add variable
+```
+
+添加：
+
+```text
+DEEPSEEK_API_KEY = 你的 DeepSeek API Key
+```
+
+至少添加到 Production 环境。为了预览部署也能用，可以同时添加到 Preview 环境。
+
+添加或修改环境变量后，需要重新部署一次：
+
+```text
+Deployments
+→ 选择最新部署
+→ Retry deployment / Redeploy
+```
+
+### 4. 验证 Pages Function
+
+部署完成后，在浏览器打开：
+
+```text
+https://你的项目.pages.dev/api/optimize
+```
+
+如果看到下面结果，说明 Pages Function 已生效：
+
+```json
+{"error":{"code":"METHOD_NOT_ALLOWED","message":"只支持 POST 请求。"}}
+```
+
+这是正常的，因为浏览器直接打开会发送 GET 请求，而接口只接受 POST。
+
+然后访问首页：
+
+```text
+https://你的项目.pages.dev/
+```
+
+输入一段提示词并点击“开始优化”。如果能返回优化结果，说明完整链路已经跑通：
+
+```text
+页面 → /api/optimize → Cloudflare Pages Function → DeepSeek → 页面展示
+```
+
+## 文件结构
+
+```text
 better-prompt/
-├── index.html          # 主页面
-├── image-prompt.html   # 图片提示词优化页面
-├── styles.css          # 页面样式
-├── app.js              # 前端交互逻辑
-├── image-prompt.js     # 图片提示词优化逻辑
-├── server.py           # Flask 代理服务器
-├── requirements.txt    # Python 依赖
-├── start.bat           # Windows 启动脚本
-└── README.md           # 使用说明
+├── index.html                  # 文本提示词优化页面
+├── image-prompt.html           # 图片提示词优化页面
+├── app.js                      # 文本页交互逻辑
+├── image-prompt.js             # 图片页交互逻辑
+├── styles.css                  # Tailwind 构建后的页面样式
+├── tokens.css                  # 设计变量
+├── src/
+│   └── tailwind.css            # Tailwind 源样式
+├── functions/
+│   └── api/
+│       └── optimize.js         # Cloudflare Pages Function
+├── server.py                   # 本地 Flask API 代理
+├── requirements.txt            # Python 依赖
+├── package.json                # 前端构建脚本
+├── start.bat                   # Windows 本地启动脚本
+├── test-data/                  # 测试提示词数据集
+├── tests/                      # 测试脚本
+├── ROADMAP.md                  # 产品迭代计划
+├── TEST_PLAN.md                # 测试方案
+└── design.md                   # 设计系统记录
 ```
 
-## 常见问题
+## 接口说明
 
-### Q: 为什么需要代理服务器？
+### POST `/api/optimize`
 
-A: 由于浏览器的 CORS（跨域资源共享）限制，前端无法直接调用外部 API。代理服务器作为中间层，解决跨域问题。
+请求体：
 
-### Q: 优化速度慢怎么办？
+```json
+{
+  "messages": [
+    {
+      "role": "system",
+      "content": "系统提示词"
+    },
+    {
+      "role": "user",
+      "content": "用户原始提示词"
+    }
+  ]
+}
+```
 
-A: AI 模型的响应时间通常在 10-30 秒，这取决于网络状况和服务器负载。请耐心等待。
+线上由 `functions/api/optimize.js` 处理，本地由 `server.py` 处理。
 
-### Q: 历史记录存在哪里？
+常见错误：
 
-A: 历史记录保存在浏览器的 localStorage 中，最多保存 20 条记录。清除浏览器数据会删除历史记录。
+- `MISSING_API_KEY`：未配置 `DEEPSEEK_API_KEY`。
+- `INVALID_JSON`：请求体不是有效 JSON。
+- `INVALID_REQUEST`：`messages` 缺失或不是非空数组。
+- `UPSTREAM_ERROR`：DeepSeek API 请求失败、超时或返回非 2xx。
+- `METHOD_NOT_ALLOWED`：接口不是 POST 请求。
 
-### Q: 支持哪些浏览器？
+## 开发命令
 
-A: 支持所有现代浏览器（Chrome、Firefox、Safari、Edge 等）
+重新构建 CSS：
 
-## 注意事项
+```powershell
+npm.cmd run build:css
+```
 
-- 请确保网络连接正常
-- 不要把 API 密钥提交到公开仓库；推荐使用环境变量管理密钥
-- 建议使用 Chrome 或 Edge 浏览器获得最佳体验
+检查 JS 语法：
 
-## 许可证
+```powershell
+node --check app.js
+node --check image-prompt.js
+node --check functions/api/optimize.js
+```
+
+检查 Flask 语法：
+
+```powershell
+python -c "from pathlib import Path; compile(Path('server.py').read_text(encoding='utf-8'), 'server.py', 'exec'); print('server syntax ok')"
+```
+
+## 安全注意事项
+
+- 不要把 DeepSeek API Key 写入 `app.js`、`image-prompt.js`、`server.py`、`start.bat` 或任何文档。
+- 不要提交 `.env`、`.env.*`、`.dev.vars`。
+- 如果 GitHub Push Protection 提示发现密钥，不要选择绕过，应先从文件和提交历史中移除。
+- 前端只能请求 `/api/optimize`，不能直接请求 DeepSeek API。
+
+## License
 
 MIT License

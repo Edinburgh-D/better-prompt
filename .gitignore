@@ -2,6 +2,7 @@
 __pycache__/
 .env
 .env.*
+.dev.vars
 debug.log
 server.out.log
 server.err.log
