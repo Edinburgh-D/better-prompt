@@ -4,6 +4,7 @@ module.exports = {
 		'./index.html',
 		'./text-prompt.html',
 		'./image-prompt.html',
+		'./app/**/*.{js,jsx}',
 		'./app.js',
 		'./image-prompt.js',
 	],
@@ -12,6 +13,9 @@ module.exports = {
 			colors: {},
 			boxShadow: {},
 		},
+	},
+	corePlugins: {
+		container: false,
 	},
 	plugins: [],
 };
