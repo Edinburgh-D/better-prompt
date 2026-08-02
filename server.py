@@ -18,6 +18,11 @@ def index():
     return send_from_directory(".", "index.html")
 
 
+@app.route("/text-prompt.html")
+def text_prompt():
+    return send_from_directory(".", "text-prompt.html")
+
+
 @app.route("/styles.css")
 def styles():
     return send_from_directory(".", "styles.css")
@@ -107,9 +112,9 @@ def optimize():
 
 if __name__ == "__main__":
     print("=" * 50)
-    print("提示词优化助手代理服务器")
+    print("Better Prompt 本地代理服务器")
     print("=" * 50)
-    print("服务器地址: http://localhost:5000")
+    print("服务地址: http://localhost:5000")
     print("请在浏览器中打开 http://localhost:5000 使用")
     print("按 Ctrl+C 停止服务器")
     print("=" * 50)

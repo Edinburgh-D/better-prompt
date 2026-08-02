@@ -9,6 +9,7 @@ modern-minimal，本地工作台质感。页面应像一个日常可用工具，
 ## Macrostructure Family
 
 - App pages: Split Workbench。核心操作区优先，辅助配置和历史记录从属于主流程。
+- Home page: Product Gateway。先解释工具适用场景，再把用户分流到文本、图片和未来个人数据入口。
 - Content pages: Compact Directory。只展示必要入口，不展示内部部署状态。
 
 ## Theme

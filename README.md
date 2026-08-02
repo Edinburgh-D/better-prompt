@@ -1,7 +1,8 @@
 # Better Prompt
 
-一个本地优先、轻量可维护的提示词优化工具。当前包含两个页面：
+一个本地优先、轻量可维护的提示词优化工具。当前包含首页和两个功能页面：
 
+- 首页：介绍工具能力，并作为后续个人数据管理的入口。
 - 文本提示词优化：把日常需求整理成更清晰、可执行、可复用的 AI 提问。
 - 图片提示词优化：通过标签、补充信息和模型诊断，生成中文提示词、英文提示词、负面提示词和参数建议。
 
@@ -57,6 +58,12 @@ http://localhost:5000
 
 ```text
 http://localhost:5000/image-prompt.html
+```
+
+文本提示词页面：
+
+```text
+http://localhost:5000/text-prompt.html
 ```
 
 也可以运行：
@@ -167,7 +174,8 @@ https://你的项目.pages.dev/
 
 ```text
 better-prompt/
-├── index.html                  # 文本提示词优化页面
+├── index.html                  # 首页介绍与功能入口
+├── text-prompt.html            # 文本提示词优化页面
 ├── image-prompt.html           # 图片提示词优化页面
 ├── app.js                      # 文本页交互逻辑
 ├── image-prompt.js             # 图片页交互逻辑
